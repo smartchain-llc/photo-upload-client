@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "preview": "cd svelte && npm run build && npm run preview"
+    "preview": "cd svelte && npm run build && npm run dev"
   },
   "devDependencies": {
     "svelte": "^3.59.1"

@@ -10,6 +10,12 @@
     return new WebSocket('ws://localhost:9001')
   }
   function connect(_: Event) {
+    if($connected) {
+      socket.close()
+      $msgDialogText = ''
+      $connected = false
+      return
+    }
     socket = get_socket()
     socket.addEventListener('open', (event) => {
       $connected = true
@@ -26,27 +32,48 @@
     socket.send($msgText)
   }
   function update_msgBox(msg: MessageEvent) {
-    $msgDialogText += msg.data
+    const msgData = msg.data as Blob
+    $msgDialogText += msgData.toString() + "</br>"
   }
 </script>
 
 <h1>WebSocket Test</h1>
 <button on:click={connect}>{$connected ? "Disconnect" : "Connect"}</button>
 {#if $connected}
-  <div id="msgs">{$msgDialogText}</div>
-  <input type="text" bind:value={$msgText}/>
-  <button on:click={sendMsg} disabled={$msgText.length === 0}>Send</button>
+  <div class="chat">
+    <div class="msgs">
+      {@html $msgDialogText}
+    </div>
+    <div class="input">
+      <input type="text" bind:value={$msgText}/>
+      <button on:click={sendMsg} disabled={$msgText.length === 0}>Send</button>
+    </div>
+  </div>
 {/if}
 
 <style>
   input {
-    width: 100pt;
+    width: 100%;
+    border-radius: 5pt;
   }
-  #msgs {
+  div {
+    padding: 0;
+    margin: 0;
+  }
+  div.chat {
     width: 300pt;
     height: 200pt;
+    display: flex;
+    flex-direction: column;
+  }
+  div.msgs {
     border-radius: 5pt;
     border-width: 2pt;
     border-style: solid;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  div.input {
+    display: flex;
   }
 </style>
