@@ -1,8 +1,7 @@
 <script lang='ts'>
-  import { onMount, tick } from "svelte";
+  import { onMount } from "svelte";
   import { selectedFiles, Photo } from "./Files";
   import PhotoDiv from "./Photo.svelte";
-  import BinaryDataContainer from "./BinaryDataContainer.svelte";
   
   const photosInputId = "photos_select"
   
@@ -18,8 +17,8 @@
 
     for(let index = 0; index < photosInputElement.files!.length; index++)
       $selectedFiles[index] = new Photo(photosInputElement.files![index])
-      
-    console.log($selectedFiles)
+
+    console.log($selectedFiles[0].bytes())
   }
 </script>
 

@@ -3,16 +3,26 @@
   import type { Photo } from "./Files";
   
   export let file: Photo
-  
+  let loading = "yellow"
+  file.bytes().then(data => {
+    loading = 'green'
+  },
+  err => {
+    loading = 'red'
+  }
+  )
 </script>
 
 <div class="file-container">
-  <div class="photo-file">
+  <div 
+    class="photo-file"
+    style:border-color={'green'}
+  >
     <div class="filename">
       {file.name}
     </div>
     <div>
-      {file.bytes}
+      {loading}
     </div>
   </div>  
 </div>

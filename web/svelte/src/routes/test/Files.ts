@@ -11,6 +11,16 @@ export class Photo {
   }
   public get name(): string { return this._file.name }
   public get url() : string { return this._url }
-  public get bytes() { return FileReader }
+  public bytes(): Promise<string|ArrayBuffer|null> { 
+    let ret = new Promise<string|ArrayBuffer|null>((res, rej) => {
+      setTimeout(() => {
+        const reader = new FileReader()
+        reader.readAsArrayBuffer(this._file)
+        reader.addEventListener('error', () => { rej("Error occurred") })
+        reader.addEventListener('load', () => { res(reader.result) })
+      }, 5000)
+    })
+    return ret
+  }
 }
 export const selectedFiles = writable([] as PhotoList)
